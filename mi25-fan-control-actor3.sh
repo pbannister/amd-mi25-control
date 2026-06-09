@@ -96,7 +96,7 @@ while true; do
     }
 
     $want_report && {
-        FMT="edge:%3d°C hotspot:%3d°C vrm:%3d°C pwm_have: %3d pwm last: %3d next: %3d target: %3d\n" 
+        FMT="edge:%3d°C hotspot:%3d°C vrm:%3d°C pwm have: %3d last: %3d next: %3d want: %3d\n" 
         printf "$FMT" $temp1_C $temp2_C $temp3_C $pwm_have $pwm_last $pwm_next $pwm_target
         when_next=$(date +%s)
         when_next=$(( when_next + PERIOD_REPORT ))
