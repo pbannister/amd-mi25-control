@@ -10,7 +10,7 @@ sudo systemctl stop mi25-fanctl.service
 echo "
 ==== Installing MI25 Fan Control Script to: $MI25_FANCTL_SCRIPT"
 
-sudo cp mi25-fan-control-actor2.sh $MI25_FANCTL_SCRIPT
+sudo cp mi25-fan-control-actor3.sh $MI25_FANCTL_SCRIPT
 sudo chmod +x $MI25_FANCTL_SCRIPT
 
 echo "

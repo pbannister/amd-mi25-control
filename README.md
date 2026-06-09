@@ -33,10 +33,12 @@ CARD=0 sh mi25-fan-show.sh
 Scripts to monitor the MI25 and control the fan:
 * mi25-fan-control-actor1.sh
 * mi25-fan-control-actor2.sh
+* mi25-fan-control-actor3.sh
 
 The either script can be run from the command line.
 The first is somewhat simpler - and works.
-THe second is fancier, and is also used for the fan control service.
+The second is fancier.
+The third is yet fancier, and is also used for the fan control service.
 
 # Experiments with the MI25 BIOS and fan control
 
