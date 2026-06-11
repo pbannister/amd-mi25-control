@@ -1,7 +1,16 @@
 #!/bin/bash
 
+
 CARD=${CARD-1}
-HWMON=$(readlink -f /sys/class/drm/card${CARD}/device/hwmon/hwmon*)
+HWMON=${HWMON-$(readlink -f /sys/class/drm/card${CARD}/device/hwmon/hwmon*)}
+
+# Sanity check
+test -e $HWMON/pwm1_enable || {
+    echo "ERROR cannot find PWM1 control file for card ${CARD}!"
+    echo "Please check that the card is properly installed and the driver is loaded."
+    echo "Checking: $HWMON/pwm1_enable"
+    exit 1
+}
 
 echo 1 | sudo tee $HWMON/pwm1_enable
 

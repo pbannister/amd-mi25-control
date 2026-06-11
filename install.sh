@@ -1,7 +1,28 @@
 #!/bin/sh
 
+echo "
+==== Test for PWM1 control: $HWMON/pwm1_enable"
+FOUND=false
+for HWMON in /sys/class/drm/card*/device/hwmon/hwmon* ; do
+    echo "Checking: $HWMON"
+    test -f "$HWMON/pwm1_enable" && {
+        FOUND=true
+        break
+    }
+done
+
+$FOUND || { 
+    echo "ERROR: No suitable HWMON found!"
+    exit 1
+}
+echo "Using: $HWMON"
+
+HWMON=$(readlink -f $HWMON)
+
 MI25_FANCTL_SERVICE=/etc/systemd/system/mi25-fanctl.service
 MI25_FANCTL_SCRIPT=/usr/local/bin/mi25-fan-control.sh
+
+echo 1 | sudo tee $HWMON/pwm1_enable
 
 echo "
 ==== Stopping mi25-fanctl.service (if present)"
@@ -28,6 +49,7 @@ After=modprobe@amdgpu.service
 
 [Service]
 Type=simple
+Environment="HWMON=${HWMON}"
 ExecStart=$MI25_FANCTL_SCRIPT
 Restart=always
 RestartSec=2
