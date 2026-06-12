@@ -45,7 +45,7 @@ INTERVAL=1
 # When do we want the next report?
 when_next=0
 # Interval between reports when stable.
-PERIOD_REPORT=100
+PERIOD_REPORT=2
 
 # Track last PWM for hysteresis
 pwm_last=$PWM_STAGE0
@@ -94,7 +94,10 @@ while true; do
         [ $when_now -le $when_next ] && want_report=false
     }
 
+    pwm_next=$pwm_last # if not adjusted
+
     $want_adjust && {
+        pwm_next=$pwm_target
         # ===== Smooth ramp logic =====
         [ $pwm_last -lt $pwm_target ] && {
             pwm_next=$((pwm_last + 10))
