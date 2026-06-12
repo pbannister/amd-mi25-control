@@ -19,32 +19,39 @@ test -e $HWMON/pwm1_enable || {
 # - VRM runs 10–20°C hotter than edge
 # - Best stability when PWM ramps early and smoothly
 
-PWM_MIN=90     # ~35%
-PWM_LOW=130    # ~50%
-PWM_MID=170    # ~67%
-PWM_HIGH=210   # ~82%
-PWM_MAX=255    # 100%
+PWM_STAGE0=50   # ~20% 
+PWM_STAGE1=75   # ~30%
+PWM_STAGE2=100  # ~40%
+PWM_STAGE3=150  # ~60%
+PWM_STAGE4=200  # ~80%
+PWM_STAGE5=255  # 100%
 
 # Hotspot thresholds (temp2)
-T2_LOW=40
-T2_MID=50
-T2_HIGH=60
-T2_MAX=70
+T2_STAGE1=40
+T2_STAGE2=50
+T2_STAGE3=60
+T2_STAGE4=70
+T2_STAGE5=90
 
 # VRM thresholds (temp3)
-T3_WARN=75
-T3_HIGH=85
-T3_CRIT=95
+T3_STAGE1=55
+T3_STAGE2=65
+T3_STAGE3=75
+T3_STAGE4=85
+T3_STAGE5=95
 
 INTERVAL=1
 
 # When do we want the next report?
 when_next=0
 # Interval between reports when stable.
-PERIOD_REPORT=100
+PERIOD_REPORT=10
 
 # Track last PWM for hysteresis
-pwm_last=$PWM_MIN
+pwm_last=$PWM_STAGE0
+
+# Drop fan to lowest.
+echo $PWM_STAGE0 > $PWM
 
 while true; do
     pwm_have=$(cat $PWM)
@@ -58,17 +65,21 @@ while true; do
     temp3_C=$((temp3/1000))
 
     # ===== Hotspot-based curve =====
-    pwm_want2=$PWM_MIN
-    [ $temp2_C -ge $T2_MAX  ] && pwm_want2=$PWM_MAX
-    [ $temp2_C -ge $T2_HIGH ] && pwm_want2=$PWM_HIGH
-    [ $temp2_C -ge $T2_MID  ] && pwm_want2=$PWM_MID
-    [ $temp2_C -ge $T2_LOW  ] && pwm_want2=$PWM_LOW
+    pwm_want2=$PWM_STAGE0
+
+    [ $temp2_C -ge $T2_STAGE1 ] && pwm_want2=$PWM_STAGE1
+    [ $temp2_C -ge $T2_STAGE2 ] && pwm_want2=$PWM_STAGE2
+    [ $temp2_C -ge $T2_STAGE3 ] && pwm_want2=$PWM_STAGE3
+    [ $temp2_C -ge $T2_STAGE4 ] && pwm_want2=$PWM_STAGE4
+    [ $temp2_C -ge $T2_STAGE5 ] && pwm_want2=$PWM_STAGE5
 
     # ===== VRM override =====
-    pwm_want3=$PWM_MIN
-    [ $temp3_C -ge $T3_CRIT ] && pwm_want3=$PWM_MAX
-    [ $temp3_C -ge $T3_HIGH ] && pwm_want3=$PWM_HIGH
-    [ $temp3_C -ge $T3_WARN ] && pwm_want3=$PWM_MID
+    pwm_want3=$PWM_STAGE0
+    [ $temp3_C -ge $T3_STAGE1 ] && pwm_want3=$PWM_STAGE1
+    [ $temp3_C -ge $T3_STAGE2 ] && pwm_want3=$PWM_STAGE2
+    [ $temp3_C -ge $T3_STAGE3 ] && pwm_want3=$PWM_STAGE3
+    [ $temp3_C -ge $T3_STAGE4 ] && pwm_want3=$PWM_STAGE4
+    [ $temp3_C -ge $T3_STAGE5 ] && pwm_want3=$PWM_STAGE5
 
     # Final target = max of hotspot + VRM
     pwm_target=$pwm_want2
