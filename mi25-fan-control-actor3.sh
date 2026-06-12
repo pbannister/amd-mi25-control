@@ -45,7 +45,7 @@ INTERVAL=1
 # When do we want the next report?
 when_next=0
 # Interval between reports when stable.
-PERIOD_REPORT=10
+PERIOD_REPORT=100
 
 # Track last PWM for hysteresis
 pwm_last=$PWM_STAGE0
