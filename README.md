@@ -129,7 +129,7 @@ These scripts attempt to modify the MI25’s ATOMBIOS pp_table:
 * mi25-fan-table-set.sh
 * mi25-fan-table-boot.sh
 
-You will need upp installed to use them.
+You will need **upp** installed to use them.
 
 First off, you do not want to go here.
 All my experiments ended up with the MI25 (eventually) overheating, and rebooting the computer.
@@ -169,8 +169,9 @@ As it seems fan control in the MI25 BIOS just does not work, this was all a dead
 | ``mi25-fan-control-actor1.sh`` | Basic fan controller |
 | ``mi25-fan-control-actor2.sh`` | Improved fan curve |
 | ``mi25-fan-control-actor3.sh`` | Adds smoothing + VRM override |
-| ``mi25-fan-control-actor4.sh`` | Adds hysteresis (recommended) |
-| ``mi25-fan-table-set.sh`` | Experimental pp_table modification |
-| ``mi25-fan-table-boot.sh`` | Attempts to apply pp_table at boot |
+| ``mi25-fan-control-actor4.sh`` | Adds hysteresis (maybe) |
+| ``mi25-fan-control-actor5.sh`` | Interpolates PWM for each phase and dampens jitter (recommended) |
+| ``mi25-fan-table-set.sh`` | Experimental pp_table modification (abandoned) |
+| ``mi25-fan-table-boot.sh`` | Attempts to apply pp_table at boot (abandoned) |
 
 
