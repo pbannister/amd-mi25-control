@@ -1,5 +1,9 @@
 #!/bin/sh
 
+MI25_FANCTL_SERVICE=/etc/systemd/system/mi25-fanctl.service
+MI25_FANCTL_SCRIPT=/usr/local/bin/mi25-fan-control.sh
+MI25_FANCTL_SCRIPT_SOURCE=mi25-fan-control-actor5.sh
+
 echo "
 ==== Test for PWM1 control: $HWMON/pwm1_enable"
 FOUND=false
@@ -19,9 +23,6 @@ echo "Using: $HWMON"
 
 HWMON=$(readlink -f $HWMON)
 
-MI25_FANCTL_SERVICE=/etc/systemd/system/mi25-fanctl.service
-MI25_FANCTL_SCRIPT=/usr/local/bin/mi25-fan-control.sh
-
 echo 1 | sudo tee $HWMON/pwm1_enable
 
 echo "
@@ -31,7 +32,7 @@ sudo systemctl stop mi25-fanctl.service
 echo "
 ==== Installing MI25 Fan Control Script to: $MI25_FANCTL_SCRIPT"
 
-sudo cp mi25-fan-control-actor3.sh $MI25_FANCTL_SCRIPT
+sudo cp $MI25_FANCTL_SCRIPT_SOURCE $MI25_FANCTL_SCRIPT
 sudo chmod +x $MI25_FANCTL_SCRIPT
 
 echo "

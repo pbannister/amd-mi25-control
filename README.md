@@ -43,13 +43,13 @@ All scripts assume the MI25 is card1 unless overridden with CARD=0.
 | **mi25-fan-control-actor1.sh** | Simple threshold‑based control | Basic but functional |
 | **mi25-fan-control-actor2.sh** | More advanced curve | Better ramp behavior |
 | **mi25-fan-control-actor3.sh** | Adds smoothing + VRM override | Good for compute loads |
-| **mi25-fan-control-actor4.sh** | Adds proper hysteresis | **Recommended**; used by systemd service |
+| **mi25-fan-control-actor4.sh** | Attempt at proper hysteresis |
+| **mi25-fan-control-actor5.sh** | Adjusts less often and interpolates PWM in each stage | **Recommended**; used by systemd service |
 
 Scripts can be run from the command line.
 The first is somewhat simpler - and works.
-The second is fancier.
-The third is yet fancier, and is also used for the fan control service.
-
+The second is fancier. So is the third.
+The fifth adjusts less often, and is also used for the fan control service.
 
 ## 🧠 How Fan Control Works
 
