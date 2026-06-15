@@ -1,11 +1,12 @@
 #!/bin/sh
 
-MI25_FANCTL_SERVICE=/etc/systemd/system/mi25-fanctl.service
+MI25_FANCTL_SERVICE_NAME=mi25-fanctl.service
+MI25_FANCTL_SERVICE_FILE=/etc/systemd/system/$MI25_FANCTL_SERVICE_NAME
 MI25_FANCTL_SCRIPT=/usr/local/bin/mi25-fan-control.sh
 MI25_FANCTL_SCRIPT_SOURCE=mi25-fan-control-actor5.sh
 
 echo "
-==== Test for PWM1 control: $HWMON/pwm1_enable"
+==== Test for PWM1 control: /sys/class/drm/card*/device/hwmon/hwmon*/pwm1_enable"
 FOUND=false
 for HWMON in /sys/class/drm/card*/device/hwmon/hwmon* ; do
     echo "Checking: $HWMON"
@@ -27,7 +28,7 @@ echo 1 | sudo tee $HWMON/pwm1_enable
 
 echo "
 ==== Stopping mi25-fanctl.service (if present)"
-sudo systemctl stop mi25-fanctl.service    
+sudo systemctl stop $MI25_FANCTL_SERVICE_NAME    
 
 echo "
 ==== Installing MI25 Fan Control Script to: $MI25_FANCTL_SCRIPT"
@@ -36,9 +37,9 @@ sudo cp $MI25_FANCTL_SCRIPT_SOURCE $MI25_FANCTL_SCRIPT
 sudo chmod +x $MI25_FANCTL_SCRIPT
 
 echo "
-==== Installing systemd service to: $MI25_FANCTL_SERVICE"
+==== Installing systemd service to: $MI25_FANCTL_SERVICE_FILE"
 
-sudo tee $MI25_FANCTL_SERVICE > /dev/null <<XXXX
+sudo tee $MI25_FANCTL_SERVICE_FILE > /dev/null <<XXXX
 [Unit]
 Description=MI25 Hotspot/VRM Fan Controller
 After=multi-user.target
@@ -73,10 +74,10 @@ XXXX
 echo "
 ==== Enabling and starting mi25-fanctl.service"
 sudo systemctl daemon-reload
-sudo systemctl enable mi25-fanctl.service
-sudo systemctl start mi25-fanctl.service    
+sudo systemctl enable $MI25_FANCTL_SERVICE_NAME
+sudo systemctl start $MI25_FANCTL_SERVICE_NAME
 
 echo "
 ==== Status of mi25-fanctl.service"
-sudo systemctl status mi25-fanctl.service --no-pager
+sudo systemctl status $MI25_FANCTL_SERVICE_NAME --no-pager
 
