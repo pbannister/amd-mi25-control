@@ -51,6 +51,21 @@ The first is somewhat simpler - and works.
 The second is fancier. So is the third.
 The fifth adjusts less often, and is also used for the fan control service.
 
+As a side-note, the PWM value read is often a little different from the PWM value written.
+(Presumably the hardware or BIOS steps the value.)
+So you should not rely too much (or at all) on the PWM value read.
+The scripts keep track of the PWM value last written - and this works.
+
+The usual advice online is that the VRMs can run hot, and that an extra fan blowing on the back of the card might be needed. 
+That is not at all what I see. 
+The VRMs closely track the hotspot temperatures.
+
+My theory is that by using a GPU fan, I am cooling the card as-designed. 
+(At least for the WX9100 variant.) 
+The GPU fan is pulling heat from the black heatsink, and thus from the VRMs.
+
+It works.
+
 ## 🧠 How Fan Control Works
 
 The MI25 exposes three thermal sensors via **hwmon**:
