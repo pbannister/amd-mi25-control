@@ -41,8 +41,6 @@ All scripts assume the MI25 is card1 unless overridden with CARD=0.
 | Script | Features | Notes |
 | --- | --- | --- |
 | **mi25-fan-control-actor1.sh** | Simple threshold‑based control | Basic but functional |
-| **mi25-fan-control-actor2.sh** | More advanced curve | Better ramp behavior |
-| **mi25-fan-control-actor3.sh** | Adds smoothing + VRM override | Good for compute loads |
 | **mi25-fan-control-actor4.sh** | Attempt at proper hysteresis |
 | **mi25-fan-control-actor5.sh** | Adjusts less often and interpolates PWM in each stage | **Recommended**; used by systemd service |
 
