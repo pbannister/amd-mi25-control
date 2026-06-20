@@ -41,8 +41,8 @@ All scripts assume the MI25 is card1 unless overridden with CARD=0.
 | Script | Features | Notes |
 | --- | --- | --- |
 | **mi25-fan-control-actor1.sh** | Simple threshold‑based control | Basic but functional |
-| **mi25-fan-control-actor4.sh** | Attempt at proper hysteresis |
-| **mi25-fan-control-actor5.sh** | Adjusts less often and interpolates PWM in each stage | **Recommended**; used by systemd service |
+| **mi25-fan-control-actor4.sh** | Adjusts less often and interpolates PWM in each stage |
+| **mi25-fan-control-actor5.sh** | Uses higher of hotspot or VRM temperatures | **Recommended**; used by systemd service |
 
 Scripts can be run from the command line.
 The first is somewhat simpler - and works.
