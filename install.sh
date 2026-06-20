@@ -3,7 +3,7 @@
 MI25_FANCTL_SERVICE_NAME=mi25-fanctl.service
 MI25_FANCTL_SERVICE_FILE=/etc/systemd/system/$MI25_FANCTL_SERVICE_NAME
 MI25_FANCTL_SCRIPT=/usr/local/bin/mi25-fan-control.sh
-MI25_FANCTL_SCRIPT_SOURCE=mi25-fan-control-actor5.sh
+MI25_FANCTL_SCRIPT_SOURCE=mi25-fan-control-actor6.sh
 
 echo "
 ==== Test for PWM1 control: /sys/class/drm/card*/device/hwmon/hwmon*/pwm1_enable"

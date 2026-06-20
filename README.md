@@ -177,15 +177,15 @@ As it seems fan control in the MI25 BIOS just does not work, this was all a dead
 
 ## 📦 Files in This Repository
 
+Note that **mi25-fan-control-actor5.sh** successfully kept the VRM temperature (just) under 90C at 100% GPU load.
+
 | File | Purpose |
 | --- | --- |
 | ``install.sh`` | Installs systemd service + fan controller |
 | ``mi25-fan-show.sh`` | Displays MI25 temperatures and fan data |
 | ``mi25-fan-control-actor1.sh`` | Basic fan controller |
-| ``mi25-fan-control-actor2.sh`` | Improved fan curve |
-| ``mi25-fan-control-actor3.sh`` | Adds smoothing + VRM override |
-| ``mi25-fan-control-actor4.sh`` | Adds hysteresis (maybe) |
-| ``mi25-fan-control-actor5.sh`` | Interpolates PWM for each phase and dampens jitter (recommended) |
+| ``mi25-fan-control-actor5.sh`` | Interpolates PWM for each phase and dampens jitter |
+| ``mi25-fan-control-actor6.sh`` | Picks highest temperature for control (recommended) |
 | ``mi25-fan-table-set.sh`` | Experimental pp_table modification (abandoned) |
 | ``mi25-fan-table-boot.sh`` | Attempts to apply pp_table at boot (abandoned) |
 
