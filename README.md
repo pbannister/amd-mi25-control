@@ -13,25 +13,21 @@ This project provides **reliable, runtime fan control** using Linux’s **hwmon*
 
 Run the script **install.sh**, which:
 
-1. Writes the executable file: ``/usr/local/bin/mi25-fan-control.sh``
-2. Writes the *systemctl** service file for the **mi25-fanctl** fan control service.
-3. Enables and starts the fan control service.
+1. Detects the MI25's hwmon path and sets `pwm1_enable` to 1
+2. Writes the executable file: `/usr/local/bin/mi25-fan-control.sh`
+3. Writes the **systemctl** service file for the **mi25-fanctl** fan control service.
+4. Enables and starts the fan control service.
 
 That's it, you are done. Feel free to ignore the remainder of this file.
 
 ## 🔍 Viewing MI25 Temperatures and Fan Data
 
-To inspect MI25 sensors:
+To inspect all MI25 sensors:
 ```sh
 sh mi25-fan-show.sh
 ```
 
-By default, the MI25 is assumed to be card1.
-Note all the scripts assume the MI25 is "card1".
-To override and use (for example) "card0":
-```sh
-CARD=0 sh mi25-fan-show.sh
-```
+The script auto-detects all MI25 cards by iterating over `/sys/class/drm/card*/device/hwmon/hwmon*/pwm1`.
 
 ## 🌀 Fan Control Scripts
 
@@ -41,13 +37,13 @@ All scripts assume the MI25 is card1 unless overridden with CARD=0.
 | Script | Features | Notes |
 | --- | --- | --- |
 | **mi25-fan-control-actor1.sh** | Simple threshold‑based control | Basic but functional |
-| **mi25-fan-control-actor4.sh** | Adjusts less often and interpolates PWM in each stage |
-| **mi25-fan-control-actor5.sh** | Uses higher of hotspot or VRM temperatures | **Recommended**; used by systemd service |
+| **mi25-fan-control-actor5.sh** | Adjusts less often and interpolates PWM in each stage |
+| **mi25-fan-control-actor6.sh** | Uses higher of hotspot or VRM temperatures | **Recommended**; used by systemd service |
 
 Scripts can be run from the command line.
 The first is somewhat simpler - and works.
 The second is fancier. So is the third.
-The fifth adjusts less often, and is also used for the fan control service.
+Actor6 is used by the systemd service (installed via install.sh).
 
 As a side-note, the PWM value read is often a little different from the PWM value written.
 (Presumably the hardware or BIOS steps the value.)
@@ -83,7 +79,6 @@ The actors implement:
 * hotspot‑driven PWM
 * VRM override
 * smoothing (slow down, fast up)
-* hysteresis (actor4)
 * 1‑second update loop
 
 This avoids oscillation and keeps the MI25 cool under sustained compute workloads.
@@ -175,7 +170,7 @@ As it seems fan control in the MI25 BIOS just does not work, this was all a dead
 
 ## 📦 Files in This Repository
 
-Note that **mi25-fan-control-actor5.sh** successfully kept the VRM temperature (just) under 90C at 100% GPU load.
+Note that **mi25-fan-control-actor6.sh** successfully keeps the VRM temperature under 90°C at 100% GPU load.
 
 | File | Purpose |
 | --- | --- |
@@ -186,5 +181,3 @@ Note that **mi25-fan-control-actor5.sh** successfully kept the VRM temperature (
 | ``mi25-fan-control-actor6.sh`` | Picks highest temperature for control (recommended) |
 | ``mi25-fan-table-set.sh`` | Experimental pp_table modification (abandoned) |
 | ``mi25-fan-table-boot.sh`` | Attempts to apply pp_table at boot (abandoned) |
-
-

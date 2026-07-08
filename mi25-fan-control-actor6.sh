@@ -63,7 +63,13 @@ pwm_want=$pwm_last          # will be where wanted at start
 temp_C_last=0               # assume the last known hotspot/VRM temperature
 
 # Drop fan to lowest.
-echo $pwm_last > $PWM
+echo $pwm_last > $PWM || {
+    echo "ERROR: Cannot write to $PWM"
+    sleep 1 # Slow respawn
+    # If the card is not ready, the write will fail.  
+    # Wait a second and try again.
+    exit 1
+}
 
 while true; do
     pwm_have=$(cat $PWM)
@@ -142,7 +148,7 @@ while true; do
             [ $pwm_next -lt $pwm_target ] && pwm_next=$pwm_target
         }
 
-        echo $pwm_next > $PWM
+        echo $pwm_next > $PWM 
         pwm_last=$pwm_next
     }
 
