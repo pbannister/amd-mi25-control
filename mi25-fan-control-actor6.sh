@@ -1,13 +1,13 @@
 #!/bin/bash
 
-CARD=${CARD-1}
-HWMON=${HWMON-$(readlink -f /sys/class/drm/card${CARD}/device/hwmon/hwmon*)}
+HWMON=${HWMON-$(readlink -f /sys/class/drm/card[0-9]/device/hwmon/hwmon*)}
 
 PWM=$HWMON/pwm1
 
 # Sanity check
+echo "Checking for HWMON control: $HWMON"
 test -e $HWMON/pwm1_enable || {
-    echo "ERROR cannot find PWM1 control file for card ${CARD}!"
+    echo "ERROR cannot find PWM1 control file for card!"
     echo "Please check that the card is properly installed and the driver is loaded."
     echo "Checking: $HWMON/pwm1_enable"
     exit 1
