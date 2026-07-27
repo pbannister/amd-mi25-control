@@ -49,7 +49,6 @@ After=modprobe@amdgpu.service
 
 [Service]
 Type=simple
-Environment="HWMON=${HWMON}"
 ExecStart=$MI25_FANCTL_SCRIPT
 Restart=always
 RestartSec=2
