@@ -1,20 +1,30 @@
 #!/bin/bash
 
-HWMON=${HWMON-$(readlink -f /sys/class/drm/card[0-9]/device/hwmon/hwmon*)}
-PWM=$HWMON/pwm1
-
-# Sanity check
-echo "Checking for HWMON control: $HWMON"
-test -e $HWMON/pwm1_enable || {
+HWMON="none"
+FOUND_HWMON=false
+for hwmon in /sys/class/drm/card[0-9]/device/hwmon/hwmon* ; do
+    echo "Check path : $hwmon"
+    test -e $hwmon/pwm1_enable && {
+        DEVICE=$device
+        HWMON="$(readlink -f $hwmon)"
+        DEVICE="$(readlink -f $hwmon/device)"
+        FOUND_HWMON=true
+        break
+    }
+done
+$FOUND_HWMON || {
     echo "ERROR cannot find PWM1 control file for card!"
     echo "Please check that the card is properly installed and the driver is loaded."
-    echo "Checking: $HWMON/pwm1_enable"
     exit 1
 }
-
 echo "
-===== Keep GPU up-clocked for longer"
-echo "high" | sudo tee /sys/class/drm/card*/device/power_dpm_force_performance_level
+==== Found HWMON
+DEVICE : $DEVICE
+HWMON  : $HWMON
+"
+echo "Keep GPU up-clocked for longer."
+echo "high" | tee $DEVICE/power_dpm_force_performance_level
+# grep . $DEVICE/* $HWMON/* 
 
 # ===== Fan curve parameters =====
 # Tested with a proper card-design-specific GPU fan (blower) and a custom duct.
@@ -64,6 +74,8 @@ stage=0                     # assume fan should be at the lowest stage
 pwm_last=${PWM_STAGES[0]}   # will drop PWM to minimum at start
 pwm_want=$pwm_last          # will be where wanted at start
 temp_C_last=0               # assume the last known hotspot/VRM temperature
+
+PWM=$HWMON/pwm1
 
 # Drop fan to lowest.
 echo $pwm_last > $PWM || {
