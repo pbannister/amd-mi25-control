@@ -21,9 +21,7 @@ $FOUND || {
     exit 1
 }
 echo "Using: $HWMON"
-
 HWMON=$(readlink -f $HWMON)
-
 echo 1 | sudo tee $HWMON/pwm1_enable
 
 echo "

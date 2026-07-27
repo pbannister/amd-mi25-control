@@ -1,7 +1,6 @@
 #!/bin/bash
 
 HWMON=${HWMON-$(readlink -f /sys/class/drm/card[0-9]/device/hwmon/hwmon*)}
-
 PWM=$HWMON/pwm1
 
 # Sanity check
@@ -12,6 +11,10 @@ test -e $HWMON/pwm1_enable || {
     echo "Checking: $HWMON/pwm1_enable"
     exit 1
 }
+
+echo "
+===== Keep GPU up-clocked for longer"
+echo "high" | sudo tee /sys/class/drm/card*/device/power_dpm_force_performance_level
 
 # ===== Fan curve parameters =====
 # Tested with a proper card-design-specific GPU fan (blower) and a custom duct.
